@@ -1,0 +1,13 @@
+{
+  "appId": "com.signmaging.counter",
+  "appName": "Signmaging Counter",
+  "webDir": ".",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": true,
+    "webContentsDebuggingEnabled": false
+  }
+}
