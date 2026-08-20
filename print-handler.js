@@ -1,35 +1,42 @@
-// System Print Dialog
+// Universal Print & PDF Handler for Signmaging Counter
+
 function triggerPrint() {
   window.print();
 }
 
-// PDF Export Function
-async function saveDocumentAsPDF(elementId, defaultFileName = 'Document.pdf') {
-  // Check if running inside Electron (Windows)
+async function saveDocumentAsPDF(elementId = 'printSheet', defaultFileName = 'Document.pdf') {
+  // 1. Windows Desktop App (Electron Native PDF Export)
   if (typeof window !== 'undefined' && window.require) {
     try {
       const { ipcRenderer } = window.require('electron');
       await ipcRenderer.invoke('save-pdf-native');
       return;
     } catch (e) {
-      console.warn("Electron native PDF failed, falling back to browser export.", e);
+      console.warn("Electron native PDF failed, falling back to browser dialog.", e);
     }
   }
 
-  // Fallback for Web/Android using html2pdf
+  // 2. Android / Web Export via html2pdf
   const element = document.getElementById(elementId);
-  if (!element) {
-    alert("Print container element not found.");
-    return;
+  if (element && typeof html2pdf !== 'undefined') {
+    const options = {
+      margin: 0,
+      filename: defaultFileName,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, logging: false },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(options).from(element).save();
+  } else {
+    // Standard system print dialog (includes native "Save as PDF")
+    window.print();
   }
-
-  const options = {
-    margin: 8,
-    filename: defaultFileName,
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  };
-
-  html2pdf().set(options).from(element).save();
 }
+
+// Automatically override generatePDF() when the page loads
+window.addEventListener('DOMContentLoaded', () => {
+  window.generatePDF = function() {
+    const cleanTitle = (document.title || 'Document').replace(/[^\w\s-]/gi, '_');
+    saveDocumentAsPDF('printSheet', `${cleanTitle}.pdf`);
+  };
+});
