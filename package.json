@@ -1,65 +1,22 @@
 {
   "name": "signmaging-document-counter",
-  "productName": "Signmaging Counter",
   "version": "1.0.0",
-  "description": "Signmaging Document Counter - Chalan & Quotation manager with native PDF printing",
+  "description": "Document counter, printing, and PDF export app",
   "main": "main.js",
-  "author": "Signmaging",
-  "license": "UNLICENSED",
-  "private": true,
   "scripts": {
     "start": "electron .",
-    "dev": "electron . --dev",
     "build:win": "electron-builder --win",
-    "build:win:portable": "electron-builder --win portable",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "cap:add:android": "npx cap add android",
-    "cap:sync": "npx cap sync",
-    "cap:sync:android": "npx cap sync android",
-    "cap:open:android": "npx cap open android",
-    "cap:build:android": "npx cap sync android && npx cap open android"
-  },
-  "devDependencies": {
-    "electron": "^31.3.1",
-    "electron-builder": "^24.13.3"
+    "cap:add": "cap add android",
+    "cap:sync": "cap sync android",
+    "cap:open": "cap open android"
   },
   "dependencies": {
-    "@capacitor/android": "^6.1.2",
-    "@capacitor/cli": "^6.1.2",
-    "@capacitor/core": "^6.1.2"
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/core": "^6.0.0"
   },
-  "build": {
-    "appId": "com.signmaging.counter",
-    "productName": "Signmaging Counter",
-    "directories": {
-      "output": "dist_electron"
-    },
-    "files": [
-      "**/*",
-      "!android/**/*",
-      "!dist_electron/**/*",
-      "!node_modules/electron-builder/**/*",
-      "!*.md"
-    ],
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": ["x64"]
-        },
-        {
-          "target": "portable",
-          "arch": ["x64"]
-        }
-      ]
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "Signmaging Counter"
-    }
+  "devDependencies": {
+    "@capacitor/cli": "^6.0.0",
+    "electron": "^30.0.0",
+    "electron-builder": "^24.0.0"
   }
 }
